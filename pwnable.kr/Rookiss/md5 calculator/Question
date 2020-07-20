@@ -1,0 +1,7 @@
+We made a simple MD5 calculator as a network service.
+Find a bug and exploit it to get a shell.
+
+Download : http://pwnable.kr/bin/hash
+hint : this service shares the same machine with pwnable.kr web service
+
+Running at : nc pwnable.kr 9002

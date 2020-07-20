@@ -1,0 +1,4 @@
+Sometimes, pwnable is strange...
+hint: if this challenge is hard, you are a skilled player.
+
+ssh blukat@pwnable.kr -p2222 (pw: guest)
