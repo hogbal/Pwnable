@@ -1,0 +1,7 @@
+I made a skeleton interface for one time password authentication system.
+I guess there are no mistakes.
+could you take a look at it?
+
+hint : not a race condition. do not bruteforce.
+
+ssh otp@pwnable.kr -p2222 (pw:guest)
