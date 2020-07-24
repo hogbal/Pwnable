@@ -5,7 +5,7 @@ s = ssh('ascii_easy','pwnable.kr',port=2222,password='guest')
 
 argvs=[str(i) for i in range(2)]
 
-payload = 'AAAA'
+payload = 'A'*30
 
 argvs[1] = payload
 p = s.process(executable='./ascii_easy',argv=argvs)
