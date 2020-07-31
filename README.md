@@ -10,3 +10,6 @@ dreamhack.io 사이트 바로가기 => <a href='https://dreamhack.io'>dreamhack.
 
 <h2>리눅스 명령어</h2>
 가젯찾기 : ROPgadget --binary 파일이름
+
+<h2>pwntools 문법</h2>
+libc파일에서 /bin/sh문자열 찾기 : list(libc.search("/bin/sh"))[0]
