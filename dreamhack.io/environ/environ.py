@@ -1,7 +1,7 @@
 from pwn import *
 context.log_level='debug'
 
-n = remote('host1.dreamhack.games',8367)
+n = remote('host1.dreamhack.games',8409)
 elf = ELF('./environ')
 libc = ELF('./libc.so.6')
 
