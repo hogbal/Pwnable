@@ -12,10 +12,10 @@ int fsb(char** argv, char** envp){
 
 	char*** pargv = &argv;
 	char*** penvp = &envp;
-        char** arg;
-        char* c;
-        for(arg=argv;*arg;arg++) for(c=*arg; *c;c++) *c='\0';
-        for(arg=envp;*arg;arg++) for(c=*arg; *c;c++) *c='\0';
+    char** arg;
+    char* c;
+    for(arg=argv;*arg;arg++) for(c=*arg; *c;c++) *c='\0';
+    for(arg=envp;*arg;arg++) for(c=*arg; *c;c++) *c='\0';
 	*pargv=0;
 	*penvp=0;
 
@@ -26,18 +26,18 @@ int fsb(char** argv, char** envp){
 	}
 
 	printf("Wait a sec...\n");
-        sleep(3);
+    sleep(3);
 
-        printf("key : \n");
-        read(0, buf2, 100);
-        unsigned long long pw = strtoull(buf2, 0, 10);
-        if(pw == key){
-                printf("Congratz!\n");
-                execve(args[0], args, 0);
-                return 0;
-        }
+    printf("key : \n");
+    read(0, buf2, 100);
+    unsigned long long pw = strtoull(buf2, 0, 10);
+    if(pw == key){
+            printf("Congratz!\n");
+            execve(args[0], args, 0);
+            return 0;
+    }
 
-        printf("Incorrect key \n");
+    printf("Incorrect key \n");
 	return 0;
 }
 
