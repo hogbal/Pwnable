@@ -3,7 +3,7 @@ context.arch = 'x86_64'
 context.log_level='debug'
 
 hosts = 'host1.dreamhack.games'
-port = 21944
+port = 12375
 
 p = remote(hosts,port)
 
