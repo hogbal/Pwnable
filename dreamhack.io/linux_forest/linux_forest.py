@@ -1,8 +1,8 @@
 from pwn import *
-context.log_level = 'debug'
+#context.log_level = 'debug'
 
 hosts = 'host1.dreamhack.games'
-port = 22370
+port = 16711
 
 p = remote(hosts,port)
 
