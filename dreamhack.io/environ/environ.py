@@ -5,7 +5,8 @@ context.log_level='debug'
 hosts = 'host1.dreamhack.games'
 port = 12375
 
-p = remote(hosts,port)
+#p = remote(hosts,port)
+p = process('./environ',env={'LD_PRELOAD':'./libc.so.6'})
 
 elf = ELF('./environ')
 libc = ELF('./libc.so.6')
