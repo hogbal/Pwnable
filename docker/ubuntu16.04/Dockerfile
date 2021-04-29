@@ -33,7 +33,9 @@ COPY vimrc /home/${user}/.vimrc
 
 #install pwntools
 WORKDIR /home/${user}
-RUN python3 -m pip install --upgrade pip && \
+RUN wget https://bootstrap.pypa.io/pip/3.5/get-pip.py && \
+	python3 get-pip.py && \
+    python3 -m pip install --upgrade pip && \
     python3 -m pip install --upgrade pwntools
 
 #install peda
