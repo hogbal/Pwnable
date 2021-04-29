@@ -1,65 +1,75 @@
 FROM ubuntu:16.04
+MAINTAINER hogbal31@gmail.com
 
-RUN apt-get update -y
-RUN apt-get upgrade -y
-RUN apt-get install net-tools -y
-RUN apt-get install openssh-server -y
-RUN apt-get install fonts-powerline -y
-RUN apt-get install zsh -y
-RUN apt-get install language-pack-en -y
-RUN update-locale
+ARG user=hogbal
+ARG user_passwd=hogbal
 
-RUN useradd -m hogbal -s /bin/zsh
+RUN apt-get update -y && \
+    apt-get upgrade -y && \
+    apt-get install sudo -y && \
+    apt-get install net-tools -y && \  
+	apt-get install openssh-server -y && \
+	apt-get install vim -y && \
+	apt-get install python3 python3-pip python3-dev git libssl-dev libffi-dev build-essential -y && \
+	apt-get install ruby -y && \
+	apt-get install zsh -y && \
+	apt-get install fonts-powerline -y && \
+	apt-get install language-pack-en -y && \
+	update-locale && \
+	apt -y install software-properties-common && \
+	apt-add-repository ppa:brightbox/ruby-ng && \
+	apt update && \
+	apt install ruby2.4 -y
+	
+
+RUN useradd -m ${user} -s /bin/zsh && \
+    adduser ${user} sudo && \
+    echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+
+USER ${user}
 
 #install vim
-RUN apt-get install vim -y
-COPY vimrc /home/hogbal/.vimrc
+COPY vimrc /home/${user}/.vimrc
 
 #install pwntools
-WORKDIR /home/hogbal
-RUN apt-get install python3 python3-pip python3-dev git libssl-dev libffi-dev build-essential -y
-RUN wget https://bootstrap.pypa.io/pip/3.5/get-pip.py 
-RUN python3 get-pip.py
-RUN python3 -m pip install --upgrade pip
-RUN python3 -m pip install --upgrade pwntools
+WORKDIR /home/${user}
+RUN python3 -m pip install --upgrade pip && \
+    python3 -m pip install --upgrade pwntools
 
-#install gdb-peda
-WORKDIR /home/hogbal
-RUN git clone https://github.com/longld/peda.git /home/hogbal/peda
-RUN git clone https://github.com/scwuaptx/Pwngdb.git
-RUN cp /home/hogbal/Pwngdb/.gdbinit /home/hogbal/
+#install peda
+WORKDIR /home/${user}
+RUN git clone https://github.com/longld/peda.git /home/${user}/peda
+
+#install Pwngdb
+RUN git clone https://github.com/scwuaptx/Pwngdb.git && \
+    cp /home/${user}/Pwngdb/.gdbinit /home/${user}/
 
 #install ropgadget
 RUN pip3 install ropgadget
 
 #install one_gadget
-WORKDIR /home/hogbal
-RUN apt -y install software-properties-common
-RUN apt-add-repository ppa:brightbox/ruby-ng
-RUN apt update
-RUN apt install ruby2.4 -y
-RUN git clone https://github.com/david942j/one_gadget.git /home/hogbal/one_gadget
-WORKDIR /home/hogbal/one_gadget
-RUN gem install one_gadget
-
-USER hogbal
+WORKDIR /home/${user}
+RUN git clone https://github.com/david942j/one_gadget.git /home/${user}/one_gadget
+WORKDIR /home/${user}/one_gadget
+RUN sudo gem install one_gadget
 
 #install oh my zsh
-WORKDIR /home/hogbal
-RUN sh -c "$(wget https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"
-COPY zshrc /home/hogbal/.zshrc
+WORKDIR /home/${user}
+RUN sh -c "$(wget https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)" && \
+	sed -i 's/ZSH_THEME="robbyrussell"/ZSH_THEME="agnoster"/' /home/${user}/.zshrc
+
+#git clone pwnable
+RUN git clone https://github.com/${user}/pwnable.git /home/${user}/pwnable
+
 USER root
 
-#git clone
-RUN git clone https://github.com/hogbal/pwnable.git /home/hogbal/pwnable
-
 #ssh config
-RUN sed -ri 's/^#?PermitRootLogin\s+.*/PermitRootLogin yes/' /etc/ssh/sshd_config
-RUN sed -ri 's/UsePAM yes/#UsePAM yes/g' /etc/ssh/sshd_config
+RUN sed -ri 's/^#?PermitRootLogin\s+.*/PermitRootLogin yes/' /etc/ssh/sshd_config && \
+    sed -ri 's/UsePAM yes/#UsePAM yes/g' /etc/ssh/sshd_config
 
 #set password
 RUN echo 'root:root' | chpasswd
-RUN echo 'hogbal:1234' | chpasswd
+RUN echo ${user}:${user_passwd} | chpasswd
 
 EXPOSE 22
 
