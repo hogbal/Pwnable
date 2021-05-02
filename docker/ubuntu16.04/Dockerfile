@@ -15,6 +15,7 @@ RUN apt-get update -y && \
 	apt-get install zsh -y && \
 	apt-get install fonts-powerline -y && \
 	apt-get install language-pack-en -y && \
+	apt-get install gdb -y && \
 	update-locale && \
 	apt -y install software-properties-common && \
 	apt-add-repository ppa:brightbox/ruby-ng && \

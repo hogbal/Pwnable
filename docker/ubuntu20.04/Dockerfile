@@ -15,6 +15,7 @@ RUN apt-get update -y && \
 	apt-get install zsh -y && \
 	apt-get install fonts-powerline -y && \
 	apt-get install language-pack-en -y && \
+	apt-get install gdb -y && \
 	update-locale
 
 RUN useradd -m ${user} -s /bin/zsh && \
