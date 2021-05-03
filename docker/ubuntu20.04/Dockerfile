@@ -16,6 +16,7 @@ RUN apt-get update -y && \
 	apt-get install fonts-powerline -y && \
 	apt-get install language-pack-en -y && \
 	apt-get install gdb -y && \
+	pip3 install ropgadget && \
 	update-locale
 
 RUN useradd -m ${user} -s /bin/zsh && \
@@ -40,8 +41,6 @@ RUN git clone https://github.com/longld/peda.git /home/${user}/peda
 RUN git clone https://github.com/scwuaptx/Pwngdb.git && \
     cp /home/${user}/Pwngdb/.gdbinit /home/${user}/
 
-#install ropgadget
-RUN pip3 install ropgadget
 
 #install one_gadget
 WORKDIR /home/${user}
