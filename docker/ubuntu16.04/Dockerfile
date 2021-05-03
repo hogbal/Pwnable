@@ -16,6 +16,7 @@ RUN apt-get update -y && \
 	apt-get install fonts-powerline -y && \
 	apt-get install language-pack-en -y && \
 	apt-get install gdb -y && \
+	pip3 install ropgadget && \
 	update-locale && \
 	apt -y install software-properties-common && \
 	apt-add-repository ppa:brightbox/ruby-ng && \
@@ -46,9 +47,6 @@ RUN git clone https://github.com/longld/peda.git /home/${user}/peda
 #install Pwngdb
 RUN git clone https://github.com/scwuaptx/Pwngdb.git && \
     cp /home/${user}/Pwngdb/.gdbinit /home/${user}/
-
-#install ropgadget
-RUN pip3 install ropgadget
 
 #install one_gadget
 WORKDIR /home/${user}
