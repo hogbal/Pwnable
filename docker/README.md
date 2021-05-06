@@ -13,6 +13,7 @@ Pull image from [docker hub](https://hub.docker.com/repository/docker/hogbal/pwn
 * one gadget
 * oh my zsh
 * ssh
+* tmux
 
 ## docker run
 set user and user_passwd as ARG in Dockerfile.
