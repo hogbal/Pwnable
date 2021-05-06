@@ -28,6 +28,7 @@ USER ${user}
 
 #install vim
 COPY vimrc /home/${user}/.vimrc
+COPY tmux.conf /home/${user}/.tmux.conf
 
 #install pwntools
 WORKDIR /home/${user}
