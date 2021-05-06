@@ -16,6 +16,7 @@ RUN apt-get update -y && \
 	apt-get install fonts-powerline -y && \
 	apt-get install language-pack-en -y && \
 	apt-get install gdb -y && \
+	apt-get install tmux -y && \
 	pip3 install ropgadget && \
 	update-locale && \
 	apt -y install software-properties-common && \
