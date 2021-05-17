@@ -64,9 +64,6 @@ RUN sh -c "$(wget https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/maste
 	git clone https://github.com/zsh-users/zsh-autosuggestions  /home/${user}/.oh-my-zsh/custom/plugins/zsh-autosuggestions && \
 	sed -i 's/plugins=(git)/plugins=(git zsh-syntax-highlighting zsh-autosuggestions)/' /home/${user}/.zshrc
 
-#git clone pwnable
-RUN git clone https://github.com/${user}/pwnable.git /home/${user}/pwnable
-
 USER root
 
 #ssh config
