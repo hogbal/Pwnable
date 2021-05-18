@@ -4,3 +4,5 @@ Shared\ Folders/
 vmware/
 ghidra/
 .DS_Store
+
+**/.gdb_history
