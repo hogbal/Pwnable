@@ -1,5 +1,5 @@
 # pwnable
-pwnable을 위한 repositorie입니다.
+pwnable을 위한 repository입니다..
 
 
 ## docker
