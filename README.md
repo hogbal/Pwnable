@@ -1,12 +1,10 @@
 # pwnable
-This is a github for saving pwnable studies.
+pwnable을 위한 repositorie입니다.
 
-This github has 4 folder structures.
 
 ## docker
-This is the folder with Dockerfile for solving pwnable's Wargame problems.
-
-See docker [README.md](https://github.com/hogbal/pwnable/blob/master/docker/README.md)
+docker 폴더에는 docker image를 build하기 위한 Dockerfile이 있습니다.
+[README.md](https://github.com/hogbal/pwnable/blob/master/docker/README.md)를 참고하세요.
 
 ## dreamhack.io
-Solved the Wargame problem in [dreamhack.io](https://dreamhack.io) and saved the solution to problemname.py.
+[dreamhack.io](https://dreamhack.io) 사이트의 Wargame 문제와 문제를 해결한 solution이 저장되어 있습니다.
