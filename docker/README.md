@@ -1,8 +1,8 @@
 # pwnable docker
 
-This docker image is an image with environment settings for studying pwnable.
+pwnable을 위한 환경 셋팅이 되어있는 docker image입니다.
 
-Pull image from [docker hub](https://hub.docker.com/repository/docker/hogbal/pwnable).
+image를 pull하고싶으면 [docker hub](https://hub.docker.com/repository/docker/hogbal/pwnable)를 참고하세요.
 
 ## installed 
 * vim
@@ -16,7 +16,7 @@ Pull image from [docker hub](https://hub.docker.com/repository/docker/hogbal/pwn
 * tmux
 
 ## docker run
-set user and user_passwd as ARG in Dockerfile.
+user와 user_passwd가 ARG로 설정되어 있습니다.
 
 ### No ARG setting
 ```
